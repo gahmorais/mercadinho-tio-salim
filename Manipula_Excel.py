@@ -3,8 +3,10 @@ from openpyxl import load_workbook
 
 class Excel:
     def __init__(self, caminhoDoArquivo):
-        excelFile = load_workbook(caminhoDoArquivo)
-        self._planilhaAtiva = excelFile.active
+        self._excelFile = load_workbook(caminhoDoArquivo)
+        self._caminhoDoArquivo = caminhoDoArquivo
+        self._planilhaAtiva = self._excelFile.active
+    
 
     def retornaTodaTabela(self):
 
@@ -40,3 +42,36 @@ class Excel:
             if(produto == tabela[i].codigo):
                 produtoEncontrado = tabela[i]
         return produtoEncontrado
+
+    def adicionaProduto(self, produto):
+        #Seta a quantidade de linhas e colunas da tabela
+        CAMINHO_DO_ARQUIVO = 'inventario-loja.xlsx'
+        ultimaLinha     = self._planilhaAtiva.max_row
+        ultimaColuna    = self._planilhaAtiva.max_column
+        for j in range(1, ultimaColuna + 1):
+            celula = self._planilhaAtiva.cell(row=ultimaLinha+1, column=j)
+            celula.value = "TESTE1"
+        self._excelFile.save(self._caminhoDoArquivo)
+    
+    def atualizaQuantidadeProduto(self, produto, quantidade):
+        quantidadeDeLinhas = self._planilhaAtiva.max_row
+        colunaDaQuantidade = self._planilhaAtiva.max_column
+
+        numeroDaLinha = 0
+        #Busca linha do produto
+        for i in range(1, quantidadeDeLinhas + 1):
+            celula = self._planilhaAtiva.cell(row=i, column=1)
+            if(celula.value == produto):
+                numeroDaLinha = i
+
+        #Altera linha do produto
+        celula = self._planilhaAtiva.cell(row=numeroDaLinha, column=colunaDaQuantidade)
+        valorCelula = int(celula.value)
+        if(valorCelula - quantidade < 0):
+            return False
+        else:
+            celula.value = valorCelula - quantidade
+            self._excelFile.save(self._caminhoDoArquivo)
+            return True
+
+

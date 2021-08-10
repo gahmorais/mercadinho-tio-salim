@@ -5,4 +5,5 @@ class Produto:
         self.precoCompra = precoCompra
         self.precoVenda = precoVenda
         self.quantidade = quantidade
+
         
