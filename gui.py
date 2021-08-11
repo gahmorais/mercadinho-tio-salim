@@ -60,7 +60,7 @@ class Application(tk.Frame):
     def abreTelaDeVendas(self):
         root = tk.Tk()
         root.geometry("800x600")
-        root.title("Vendas - Mercadinho Sr. Salim")
+        root.title("Vendas - Mercadinho Tio Salim")
         app = TelaDeVendas(master=root)
         app.mainloop()
 

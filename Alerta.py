@@ -6,7 +6,7 @@ class ProdutoNaoEncontrado:
         super().__init__()
         self.root = tk.Tk()
         self.root.geometry("320x240")
-        self.root.title("Alerta - Mercadinho Sr. Salim")
+        self.root.title("Alerta - Mercadinho Tio Salim")
         self.root.bind('<Return>', lambda a: self.root.destroy())
         self.root.bind('<Escape>', lambda a: self.root.destroy())
         self.root.focus_force()
