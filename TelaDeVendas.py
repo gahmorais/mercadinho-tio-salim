@@ -14,13 +14,22 @@ class TelaDeVendas(tk.Frame):
         self.planilha = Excel('inventario-loja.xlsx')
         self.count = 1
         self.total = 0
+        
 
     def criaElementos(self):
         self.campos = tk.Frame(self.master, bg=COR_SECUNDARIA)
         self.produtos = tk.Frame(self.master, bg=COR_SECUNDARIA)
-        self.valorTotal = tk.Frame(self.produtos)
+        self.frameValorTotal = tk.Frame(self.produtos)
         self.frameQuantidade = tk.Frame(self.campos)
-        self.logo = tk.Canvas(self.campos,bg=COR_SECUNDARIA, highlightthickness=0)
+
+        self._tamanhoDaTela = root.winfo_screenheight()
+        if(self._tamanhoDaTela < 900):
+            self.TAMANHO_DA_IMAGEM = IMAGEM_PEQUENA
+        else:
+            self.TAMANHO_DA_IMAGEM = IMAGEM_GRANDE
+
+        self.logo = tk.Canvas(
+            self.campos, bg=COR_SECUNDARIA, highlightthickness=0)
 
         self.titulo = tk.Label(
             self.master,
@@ -66,7 +75,7 @@ class TelaDeVendas(tk.Frame):
             font=(ESTILO_FONT_MEDIA)
         )
 
-        self.tabela = tk.Frame(self.produtos, bg='gray')
+        self.frameTabela = tk.Frame(self.produtos, bg='gray')
 
         self.campoCodigoProduto.bind(
             '<Return>',
@@ -115,14 +124,14 @@ class TelaDeVendas(tk.Frame):
         )
 
         self.labelValorTotal = tk.Label(
-            self.valorTotal,
+            self.frameValorTotal,
             text="Total: ",
             bg=COR_SECUNDARIA,
             fg='#fff',
             font=(ESTILO_FONT_GRANDE),
         )
         self.campoValorTotal = tk.Label(
-            self.valorTotal,
+            self.frameValorTotal,
             bg='#fff',
             width=14,
             font=(ESTILO_FONT_GRANDE)
@@ -132,7 +141,7 @@ class TelaDeVendas(tk.Frame):
         self.renderizaElementos()
 
     def criaTabela(self):
-        self.conteudoTabela = ttk.Treeview(self.tabela)
+        self.conteudoTabela = ttk.Treeview(self.frameTabela)
         self.conteudoTabela.bind(
             '<Delete>',
             lambda e: self.removeLinha(self.campoCodigoProduto.get())
@@ -219,9 +228,7 @@ class TelaDeVendas(tk.Frame):
             pady=40
         )
 
-        self.labelCampoCodigoProduto.pack(
-            fill='x',
-        )
+        self.labelCampoCodigoProduto.pack(fill='x')
         self.campoCodigoProduto.pack(fill='x')
         self.frameQuantidade.pack(fill='x', pady=40)
 
@@ -236,16 +243,20 @@ class TelaDeVendas(tk.Frame):
         # self.btnBuscarProduto.pack(fill='x')
         # self.btnExcluirProduto.pack(fill='x')
 
-        self.tabela.pack(expand=1, fill='both')
+        self.frameTabela.pack(expand=1, fill='both')
         self.conteudoTabela.pack(expand=1, fill='both')
 
-        self.valorTotal.pack(side='right', pady=10)
+        self.frameValorTotal.pack(side='right', pady=10)
         self.labelValorTotal.pack(side='left')
         self.campoValorTotal.pack(side='right')
 
         self.btnFinalizaCompra.pack(fill='x', pady=40)
         self.logo.pack(expand=1, fill='both')
-        self.image = ImageTk.PhotoImage(Image.open("grocery-cart.png"))
+        cartImage = Image.open("grocery-cart.png")
+
+        print(self.TAMANHO_DA_IMAGEM)
+        cartImage = cartImage.resize(self.TAMANHO_DA_IMAGEM, Image.ANTIALIAS)
+        self.image = ImageTk.PhotoImage(cartImage)
         self.logo.create_image(200, 0, anchor='nw', image=self.image)
 
     def adicionaLinha(self, codigoProduto, quantidade=1):
@@ -293,6 +304,17 @@ class TelaDeVendas(tk.Frame):
                 self.campoExcluirProduto.delete(0, 'end')
 
     def finalizaCompra(self):
+        itensDaLista = self.conteudoTabela.get_children()
+        for item in itensDaLista:
+            codigoProduto = self.conteudoTabela.item(item, 'values')[0]
+            quantidade = int(self.conteudoTabela.item(item, 'values')[2])
+            statusAtualizacao = self.planilha.atualizaQuantidadeProduto(
+                codigoProduto, quantidade)
+            if(statusAtualizacao):
+                pass
+            else:
+                print(f'Verifique o item: {codigoProduto}')
+
         self.limpaTabela()
         self.campoValorTotal['text'] = ""
 
@@ -303,8 +325,8 @@ class TelaDeVendas(tk.Frame):
 
 
 root = tk.Tk()
-root.geometry("800x600")
-# root.attributes('-fullscreen', True)
+# root.geometry("800x600")
+root.attributes('-fullscreen', True)
 root.title(f'Vendas - {ESTABELECIMENTO}')
 root.configure(bg=COR_SECUNDARIA)
 app = TelaDeVendas(master=root)

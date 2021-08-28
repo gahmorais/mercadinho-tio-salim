@@ -53,7 +53,7 @@ class Excel:
             celula.value = "TESTE1"
         self._excelFile.save(self._caminhoDoArquivo)
     
-    def atualizaQuantidadeProduto(self, produto, quantidade):
+    def atualizaQuantidadeProduto(self, produto, quantidade: int):
         quantidadeDeLinhas = self._planilhaAtiva.max_row
         colunaDaQuantidade = self._planilhaAtiva.max_column
 
