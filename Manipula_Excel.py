@@ -7,7 +7,6 @@ class Excel:
         self._caminhoDoArquivo = caminhoDoArquivo
         self._planilhaAtiva = self._excelFile.active
     
-
     def retornaTodaTabela(self):
 
         #Seta a quantidade de linhas e colunas da tabela
@@ -55,17 +54,18 @@ class Excel:
     
     def atualizaQuantidadeProduto(self, produto, quantidade: int):
         quantidadeDeLinhas = self._planilhaAtiva.max_row
-        colunaDaQuantidade = self._planilhaAtiva.max_column
+        colunaDaQuantidade = 5
+        colunaComCodigoDoProduto = 1
 
-        numeroDaLinha = 0
+        indiceDaLinhaDoPruduto = 0
         #Busca linha do produto
         for i in range(1, quantidadeDeLinhas + 1):
-            celula = self._planilhaAtiva.cell(row=i, column=1)
+            celula = self._planilhaAtiva.cell(row=i, column=colunaComCodigoDoProduto)
             if(celula.value == produto):
-                numeroDaLinha = i
+                indiceDaLinhaDoPruduto = i
 
         #Altera linha do produto
-        celula = self._planilhaAtiva.cell(row=numeroDaLinha, column=colunaDaQuantidade)
+        celula = self._planilhaAtiva.cell(row=indiceDaLinhaDoPruduto, column=colunaDaQuantidade)
         valorCelula = int(celula.value)
         if(valorCelula - quantidade < 0):
             return False

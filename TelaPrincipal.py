@@ -1,72 +1,113 @@
 import tkinter as tk
+from PIL import ImageTk, Image
 from Manipula_Excel import Excel
 from TelaDeVendas import TelaDeVendas
+from TelaDeConsulta import TelaDeConsulta
 from openpyxl import load_workbook
+from constantes import *
 
 
 class Application(tk.Frame):
-
     def __init__(self, master=None):
         super().__init__(master)
-        CAMINHO_DO_ARQUIVO_EXCEL = 'inventario-loja.xlsx'
         self.master = master
-        self.pack()
+        print(self)
         self.create_widgets()
-        self.planilha = Excel(CAMINHO_DO_ARQUIVO_EXCEL)
 
     def create_widgets(self):
-        self.label_digiteOCodigo = tk.Label(
-        self.master, text="Digite o código: ")
-        self.label_descricao = tk.Label(self.master)
-        self.label_codigoProduto = tk.Label(self.master)
-        self.label_preco = tk.Label(self.master)
-        self.label_quantidade = tk.Label(self.master)
+        self.frameTituloELogo = tk.Frame(self.master, bg=COR_FUNDO_SECUNDARIA)
+        self.frameBotoes = tk.Frame(self.master, bg=COR_FUNDO_SECUNDARIA)
+        self.frameTitulo = tk.Frame(self.frameTituloELogo, bg=COR_FUNDO_SECUNDARIA)
 
-        self.digiteOCodigo = tk.Entry(self.master)
-        self.btnBuscaProduto = tk.Button(self.master, text="Busca produto", fg="red",
-                                         command=lambda: self.setaDadosNaTela(self.digiteOCodigo.get()))
-
-        self.quit = tk.Button(self.master, text="Sair", fg="red",
-                              command=self.master.destroy)
-
-        self.btnAbreTelaDeVendas = tk.Button(
-            self.master, text="Vendas", command=self.abreTelaDeVendas)
-
-        self.label_digiteOCodigo.place(x=0, y=0)
-        self.digiteOCodigo.place(x=100, y=0)
-        self.btnBuscaProduto.place(x=250, y=0)
-        self.btnAbreTelaDeVendas.place(x=400, y=100)
-        self.quit.place(x=700, y=0)
-
-    def setaDadosNaTela(self, codigo):
-        produto = self.planilha.buscaProduto(codigo)
-        if(produto != ""):
-            self.label_descricao["text"] = produto.descricao
-            self.label_codigoProduto["text"] = produto.codigo
-            self.label_preco["text"] = "R$ " + produto.precoVenda
-            self.label_quantidade["text"] = produto.quantidade
-
-            self.label_codigoProduto.place(y=100, x=0)
-            self.label_descricao.place(y=100, x=100)
-            self.label_preco.place(y=100, x=300)
-            self.label_quantidade.place(y=100, x=400)
+        self._tamanhoDaTela = self.winfo_screenheight()
+        if(self._tamanhoDaTela < 900):
+            self.TAMANHO_DA_IMAGEM = IMAGEM_PEQUENA
         else:
-            self.label_codigoProduto["text"] = ""
-            self.label_preco["text"] = ""
-            self.label_quantidade["text"] = ""
-            self.label_descricao["text"] = "Produto não encontrado"
-            self.label_descricao.pack()
+            self.TAMANHO_DA_IMAGEM = IMAGEM_GRANDE
+
+        self.tituloLinhaUm = tk.Label(
+            self.frameTitulo,
+            text='Mercado',
+            font=ESTILO_FONT_TELA_PRINCIPAL_GRANDE,
+            bg=COR_FUNDO_SECUNDARIA,
+            fg= COR_TEXTO_PRIMARIA
+        )
+
+        self.tituloLinhaDois = tk.Label(
+            self.frameTitulo,
+            text='Tio Salim',
+            font=ESTILO_FONT_TELA_PRINCIPAL_MUITO_GRANDE,
+            bg=COR_FUNDO_SECUNDARIA,
+            fg= COR_TEXTO_PRIMARIA
+        )
+        self.logo = tk.Canvas(
+            self.frameTituloELogo,
+            bg=COR_FUNDO_SECUNDARIA,
+            highlightthickness=0
+        )
+
+        self.btnFecharAplicacao = tk.Button(
+            self.frameBotoes,
+            text="Fechar aplicação",
+            font=ESTILO_FONT_GRANDE,
+            bg=COR_FUNDO_PRIMARIA,
+            fg=COR_TEXTO_PRIMARIA,
+            command=self.master.destroy
+        )
+
+        self.btnTelaDeVendas = tk.Button(
+            self.frameBotoes,
+            text="Venda",
+            font=ESTILO_FONT_GRANDE,
+            bg=COR_FUNDO_PRIMARIA,
+            fg=COR_TEXTO_PRIMARIA,
+            command=self.abreTelaDeVendas
+        )
+
+        self.btnTelaDeConsulta = tk.Button(
+            self.frameBotoes,
+            text="Consulta produtos",
+            font=ESTILO_FONT_GRANDE,
+            bg=COR_FUNDO_PRIMARIA,
+            fg=COR_TEXTO_PRIMARIA,
+            command=self.abreTelaDeConsulta
+        )
+
+
+        self.renderizaFrameBotoes()
+        self.renderizaFrameTituloELogo()
+
+    def renderizaFrameBotoes(self):
+        self.frameBotoes.pack(side='right', expand=1, fill='both', padx=50)
+        self.btnTelaDeVendas.pack(expand=1, fill='both', pady=100)
+        self.btnTelaDeConsulta.pack(expand=1, fill='both', pady=100)
+        self.btnFecharAplicacao.pack(expand=1, fill='both', pady=100)
+
+    def renderizaFrameTituloELogo(self):
+        self.frameTituloELogo.pack(side='left', expand=1, fill='both', pady=100)
+        self.frameTitulo.pack(expand=1, fill='both')
+        self.tituloLinhaUm.pack(fill='x')
+        self.tituloLinhaDois.pack(fill='x')
+        self.logo.pack(expand=1, fill='both')
+        imagemCarrinho = Image.open("grocery-cart.png")
+        imagemCarrinho = imagemCarrinho.resize(
+            self.TAMANHO_DA_IMAGEM,
+            Image.ANTIALIAS
+        )
+        self._image = ImageTk.PhotoImage(imagemCarrinho)
+        self.logo.create_image(300, 0, anchor='nw', image=self._image)
 
     def abreTelaDeVendas(self):
-        root = tk.Tk()
-        root.geometry("800x600")
-        root.title("Vendas - Mercado Tio Salim")
-        app = TelaDeVendas(master=root)
-        app.mainloop()
+        TelaDeVendas()
+
+    def abreTelaDeConsulta(self):
+        telaDeConsulta = TelaDeConsulta(self)
+        telaDeConsulta.grab_set()
 
 
-root = tk.Tk()
-root.geometry("800x600")
-root.title("Mercadinho Sr. Salim")
-app = Application(master=root)
-app.mainloop()
+if __name__ == "__main__":
+    root = tk.Tk()
+    root.attributes('-fullscreen', True)
+    root.configure(bg=COR_FUNDO_SECUNDARIA)
+    app = Application(master=root)
+    app.mainloop()
