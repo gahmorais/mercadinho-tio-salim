@@ -139,8 +139,9 @@ class TelaDeConsulta(tk.Toplevel):
             self.descricao['text'] = produto.descricao
             self.quantidade['text'] = produto.quantidade
             self.preco['text'] = f'R$ {produto.precoVenda}'
+            self.campoBuscaProduto.delete(0,'end')
         else:
-            ProdutoNaoEncontrado()
+            ProdutoNaoEncontrado(self)
 
     def renderizaElementos(self):
         self.frameBarraDeTitulo.pack(fill='x')

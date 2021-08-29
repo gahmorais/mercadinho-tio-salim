@@ -7,7 +7,7 @@ from Manipula_Excel import Excel
 
 
 class TelaDeVendas(tk.Toplevel):
-    def __init__(self, master=None):
+    def __init__(self, master):
         tk.Toplevel.__init__(self, master)
         self.main_frame = tk.Frame(self, bg=COR_FUNDO_SECUNDARIA)
         self.attributes('-fullscreen', True)

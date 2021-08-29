@@ -11,7 +11,6 @@ class Application(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
         self.master = master
-        print(self)
         self.create_widgets()
 
     def create_widgets(self):
@@ -98,12 +97,10 @@ class Application(tk.Frame):
         self.logo.create_image(300, 0, anchor='nw', image=self._image)
 
     def abreTelaDeVendas(self):
-        TelaDeVendas()
+        TelaDeVendas(self)
 
     def abreTelaDeConsulta(self):
-        telaDeConsulta = TelaDeConsulta(self)
-        telaDeConsulta.grab_set()
-
+        TelaDeConsulta(self)
 
 if __name__ == "__main__":
     root = tk.Tk()

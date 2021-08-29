@@ -2,29 +2,38 @@ import tkinter as tk
 from constantes import *
 
 
-class ProdutoNaoEncontrado:
+class ProdutoNaoEncontrado(tk.Toplevel):
     def __init__(self, master=None):
-        super().__init__()
-        self.root = tk.Tk()
-        self.root.geometry("320x240")
-        self.root.title(f"Alerta - {ESTABELECIMENTO}")
-        self.root.bind('<Return>', lambda a: self.root.destroy())
-        self.root.bind('<Escape>', lambda a: self.root.destroy())
-        self.root.focus_force()
+        tk.Toplevel.__init__(self, master)
+        self.main_frame = tk.Frame(self, bg=COR_FUNDO_SECUNDARIA, highlightthickness=2)
+        espacamentoSuperior = int(self.winfo_screenheight() * .4)
+        espacamentoLadoEsquerdo = int(self.winfo_screenwidth() *.4)
+        self.geometry(f"320x240+{espacamentoLadoEsquerdo}+{espacamentoSuperior}")
+        self.title("")
+        self.overrideredirect(1)
+        # self.title(f"Alerta - {ESTABELECIMENTO}")
+        self.bind('<Return>', lambda a: self.destroy())
+        self.bind('<Escape>', lambda a: self.destroy())
+        self.focus_force()
+        self.main_frame.pack(expand=1, fill='both')
 
         self.mensagem = tk.Label(
-            self.root,
+            self.main_frame,
             text="Produto não encontrado",
-            font=ESTILO_FONT_GRANDE
+            font=ESTILO_FONT_MEDIA,
+            fg=COR_TEXTO_PRIMARIA,
+            bg=COR_FUNDO_SECUNDARIA
         )
 
         self.btnSair = tk.Button(
-            self.root,
-            text="Ok",
-            font=ESTILO_FONT_GRANDE,
-            command=self.root.destroy
+            self.main_frame,
+            text="Fechar",
+            bg=COR_FUNDO_PRIMARIA,
+            fg=COR_TEXTO_PRIMARIA,
+            border=1,
+            font=ESTILO_FONT_MEDIA,
+            command=self.destroy
         )
         
-        self.mensagem.pack()
-        self.btnSair.pack()
-        self.root.mainloop()
+        self.mensagem.pack(expand=1, fill='x')
+        self.btnSair.pack(expand=1, fill='x', padx=40)
