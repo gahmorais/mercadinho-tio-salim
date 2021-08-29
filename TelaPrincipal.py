@@ -11,12 +11,13 @@ class Application(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
         self.master = master
-        self.create_widgets()
+        self.criaElementos()
 
-    def create_widgets(self):
+    def criaElementos(self):
         self.frameTituloELogo = tk.Frame(self.master, bg=COR_FUNDO_SECUNDARIA)
         self.frameBotoes = tk.Frame(self.master, bg=COR_FUNDO_SECUNDARIA)
-        self.frameTitulo = tk.Frame(self.frameTituloELogo, bg=COR_FUNDO_SECUNDARIA)
+        self.frameTitulo = tk.Frame(
+            self.frameTituloELogo, bg=COR_FUNDO_SECUNDARIA)
 
         self._tamanhoDaTela = self.winfo_screenheight()
         if(self._tamanhoDaTela < 900):
@@ -29,7 +30,7 @@ class Application(tk.Frame):
             text='Mercado',
             font=ESTILO_FONT_TELA_PRINCIPAL_GRANDE,
             bg=COR_FUNDO_SECUNDARIA,
-            fg= COR_TEXTO_PRIMARIA
+            fg=COR_TEXTO_PRIMARIA
         )
 
         self.tituloLinhaDois = tk.Label(
@@ -37,8 +38,9 @@ class Application(tk.Frame):
             text='Tio Salim',
             font=ESTILO_FONT_TELA_PRINCIPAL_MUITO_GRANDE,
             bg=COR_FUNDO_SECUNDARIA,
-            fg= COR_TEXTO_PRIMARIA
+            fg=COR_TEXTO_PRIMARIA
         )
+
         self.logo = tk.Canvas(
             self.frameTituloELogo,
             bg=COR_FUNDO_SECUNDARIA,
@@ -72,18 +74,42 @@ class Application(tk.Frame):
             command=self.abreTelaDeConsulta
         )
 
-
         self.renderizaFrameBotoes()
         self.renderizaFrameTituloELogo()
 
     def renderizaFrameBotoes(self):
-        self.frameBotoes.pack(side='right', expand=1, fill='both', padx=50)
-        self.btnTelaDeVendas.pack(expand=1, fill='both', pady=100)
-        self.btnTelaDeConsulta.pack(expand=1, fill='both', pady=100)
-        self.btnFecharAplicacao.pack(expand=1, fill='both', pady=100)
+        self.frameBotoes.pack(
+            side='right',
+            expand=1,
+            fill='both',
+            padx=50,
+            pady=100
+        )
+        self.btnTelaDeVendas.pack(
+            expand=1, 
+            fill='both', 
+        )
+
+        self.btnTelaDeConsulta.pack(
+            expand=1, 
+            fill='both', 
+            pady=200
+        )
+        
+        self.btnFecharAplicacao.pack(
+            expand=1, 
+            fill='both', 
+        )
 
     def renderizaFrameTituloELogo(self):
-        self.frameTituloELogo.pack(side='left', expand=1, fill='both', pady=100)
+
+        self.frameTituloELogo.pack(
+            side='left',
+            expand=1,
+            fill='both',
+            pady=100
+        )
+
         self.frameTitulo.pack(expand=1, fill='both')
         self.tituloLinhaUm.pack(fill='x')
         self.tituloLinhaDois.pack(fill='x')
@@ -101,6 +127,7 @@ class Application(tk.Frame):
 
     def abreTelaDeConsulta(self):
         TelaDeConsulta(self)
+
 
 if __name__ == "__main__":
     root = tk.Tk()
