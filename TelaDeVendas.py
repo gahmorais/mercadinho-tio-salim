@@ -325,12 +325,13 @@ class TelaDeVendas(tk.Toplevel):
                     break
             if(not produtoAtualizado):
                 id = self.count
+                precoTotal = float(produto.precoVenda.replace(",", ".")) * int(quantidade)
                 self.conteudoTabela.insert(parent='', index=id, iid=id, text='', values=(
                     produto.codigo,
                     produto.descricao,
                     quantidade,
                     produto.precoVenda,
-                    float(produto.precoVenda.replace(",",".")) * int(quantidade)
+                    self.formataValor(precoTotal)
                 ))
                 self.count += 1
 
@@ -353,7 +354,7 @@ class TelaDeVendas(tk.Toplevel):
             )
             self.total += valor
 
-        totalFormatado = "{:.2f}".format(self.total)
+        totalFormatado = self.formataValor(self.total) #"{:.2f}".format()
         self.campoValorTotal['text'] = f"R$ {totalFormatado}"
 
     def abreTelaDePesagem(self):
@@ -361,12 +362,13 @@ class TelaDeVendas(tk.Toplevel):
 
     def adicionaLinhaProdutoPesavel(self, produtoPesavel):
         id = self.count
+        precoTotal = float(produtoPesavel.precoVenda.replace(",", ".")) * float(produtoPesavel.quantidade)
         self.conteudoTabela.insert(parent='', index=id, iid=id, text='', values=(
             produtoPesavel.codigo,
             produtoPesavel.descricao,
             produtoPesavel.quantidade,
             produtoPesavel.precoVenda,
-            float(produtoPesavel.precoVenda.replace(",", ".")) * float(produtoPesavel.quantidade)
+            self.formataValor(precoTotal)
         ))
         self.atualizaTotal()
         self.count += 1
@@ -381,12 +383,14 @@ class TelaDeVendas(tk.Toplevel):
                 self.atualizaTotal()
 
     def atualizaLinha(self, produto, indice, quantidade):
-        
+
         codigo = produto[0]
         descricao = produto[1]
         quantidadeAtual = int(produto[2])
         precoUni = float(produto[3].replace(",", "."))
         novaQuantidade = quantidadeAtual + quantidade
+        precoTotal = precoUni * novaQuantidade
+        # totalFormatado = "{:.2f}".format(total)
         self.conteudoTabela.item(
             indice,
             values=(
@@ -394,18 +398,19 @@ class TelaDeVendas(tk.Toplevel):
                 descricao,
                 novaQuantidade,
                 precoUni,
-                precoUni * novaQuantidade
+                self.formataValor(precoTotal)
             )
         )
-        
 
     def finalizaCompra(self):
         itensDaLista = self.conteudoTabela.get_children()
         for item in itensDaLista:
             codigoProduto = self.conteudoTabela.item(item, 'values')[0]
-            quantidade = int(self.conteudoTabela.item(item, 'values')[2])
+            quantidade = float(self.conteudoTabela.item(item, 'values')[2])
             statusAtualizacao = self.planilha.atualizaQuantidadeProduto(
-                codigoProduto, quantidade)
+                codigoProduto,
+                quantidade
+            )
             if(statusAtualizacao):
                 pass
             else:
@@ -418,3 +423,6 @@ class TelaDeVendas(tk.Toplevel):
         itensDaTabela = self.conteudoTabela.get_children()
         for i in itensDaTabela:
             self.conteudoTabela.delete(i)
+    
+    def formataValor(self, valor):
+        return "{:.2f}".format(valor)

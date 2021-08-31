@@ -67,11 +67,12 @@ class Excel:
         #Altera linha do produto
         celula = self._planilhaAtiva.cell(row=indiceDaLinhaDoPruduto, column=colunaDaQuantidade)
         valorCelula = int(celula.value)
+        celula.value = valorCelula - quantidade
+        self._excelFile.save(self._caminhoDoArquivo)
+
         if(valorCelula - quantidade < 0):
             return False
         else:
-            celula.value = valorCelula - quantidade
-            self._excelFile.save(self._caminhoDoArquivo)
-            return True
+           return True
 
 
