@@ -2,7 +2,7 @@ import tkinter as tk
 from PIL import ImageTk, Image
 from constantes import *
 from tkinter import ttk
-from Alerta import ProdutoNaoEncontrado
+from Alerta import Mensagem
 from TelaProdutoPesavel import TelaProdutoPesavel
 from Manipula_Excel import Excel
 
@@ -176,7 +176,8 @@ class TelaDeVendas(tk.Toplevel):
         self.conteudoTabela['columns'] = (
             'Código',
             'Descricao',
-            'Quantidade',
+            'Qtd',
+            'Preço Uni',
             'Preço'
         )
 
@@ -193,15 +194,22 @@ class TelaDeVendas(tk.Toplevel):
         self.conteudoTabela.column(
             'Descricao',
             anchor='center',
-            minwidth=200,
-            width=200
+            minwidth=120,
+            width=120
         )
         self.conteudoTabela.column(
-            'Quantidade',
+            'Qtd',
             anchor='center',
             minwidth=80,
             width=80
         )
+        self.conteudoTabela.column(
+            'Preço Uni',
+            anchor='center',
+            minwidth=80,
+            width=80
+        )
+
         self.conteudoTabela.column(
             'Preço',
             anchor='center',
@@ -225,13 +233,19 @@ class TelaDeVendas(tk.Toplevel):
             anchor='center'
         )
         self.conteudoTabela.heading(
-            'Quantidade',
-            text='Quantidade',
+            'Qtd',
+            text='Qtd / Peso',
             anchor='center'
         )
         self.conteudoTabela.heading(
+            'Preço Uni',
+            text='Preço Uni',
+            anchor='center'
+        )
+
+        self.conteudoTabela.heading(
             'Preço',
-            text='Preço | Preço/Kg',
+            text='Preço',
             anchor='center'
         )
 
@@ -285,7 +299,9 @@ class TelaDeVendas(tk.Toplevel):
         imagemCarrinho = Image.open("grocery-cart.png")
 
         imagemCarrinho = imagemCarrinho.resize(
-            self.TAMANHO_DA_IMAGEM, Image.ANTIALIAS)
+            self.TAMANHO_DA_IMAGEM,
+            Image.ANTIALIAS
+        )
         self._image = ImageTk.PhotoImage(imagemCarrinho)
         self.logo.create_image(200, 0, anchor='nw', image=self._image)
 
@@ -313,27 +329,19 @@ class TelaDeVendas(tk.Toplevel):
                     produto.codigo,
                     produto.descricao,
                     quantidade,
-                    produto.precoVenda
+                    produto.precoVenda,
+                    float(produto.precoVenda.replace(",",".")) * int(quantidade)
                 ))
                 self.count += 1
 
             self.atualizaTotal()
 
-            # children = self.conteudoTabela.get_children()
-            # for child in children:
-            #     valor = float(self.conteudoTabela.item(
-            #         child, 'values')[3].replace(",", "."))
-            #     quantidade = int(self.conteudoTabela.item(child, 'values')[2])
-            #     self.total += valor*quantidade
-
-            # totalFormatado = "{:.2f}".format(self.total)
-            # self.campoValorTotal['text'] = f"R$ {totalFormatado}"
             self.campoCodigoProduto.delete(0, 'end')
             self.campoQuantidade.delete(0, 'end')
             self.campoQuantidade.insert(0, "1")
 
         else:
-            ProdutoNaoEncontrado()
+            Mensagem(self, "Produto não encontrado")
 
     def atualizaTotal(self):
         self.total = 0
@@ -341,10 +349,9 @@ class TelaDeVendas(tk.Toplevel):
         for item in itensNaTabela:
             valor = float(self.conteudoTabela.item(
                 item,
-                'values')[3].replace(",", ".")
+                'values')[4].replace(",", ".")
             )
-            quantidade = float(self.conteudoTabela.item(item, 'values')[2])
-            self.total += valor*quantidade
+            self.total += valor
 
         totalFormatado = "{:.2f}".format(self.total)
         self.campoValorTotal['text'] = f"R$ {totalFormatado}"
@@ -358,37 +365,27 @@ class TelaDeVendas(tk.Toplevel):
             produtoPesavel.codigo,
             produtoPesavel.descricao,
             produtoPesavel.quantidade,
-            float(produtoPesavel.precoVenda.replace(",", "."))
+            produtoPesavel.precoVenda,
+            float(produtoPesavel.precoVenda.replace(",", ".")) * float(produtoPesavel.quantidade)
         ))
         self.atualizaTotal()
         self.count += 1
-        # print(f'id: {self.count}')
-        # print(produtoPesavel.codigo)
-        # print(produtoPesavel.descricao)
-        # print(produtoPesavel.quantidade)
-        # print(produtoPesavel.precoVenda)
 
     def removeLinha(self, codigoProduto):
         itensDaLista = self.conteudoTabela.get_children()
         for item in itensDaLista:
             produtoNalista = self.conteudoTabela.item(item, 'values')[0]
-            # quantidadeDoProduto = int(
-            #     self.conteudoTabela.item(item, 'values')[2])
             if (codigoProduto == produtoNalista):
                 self.conteudoTabela.delete(item)
                 self.campoExcluirProduto.delete(0, 'end')
                 self.atualizaTotal()
-                # valorDoProduto = float(self.conteudoTabela.item(
-                #     item, 'values')[3].replace(",", "."))
-                # self.total -= quantidadeDoProduto * valorDoProduto
-                # totalFormatado = "{:.2f}".format(self.total)
-                # self.campoValorTotal['text'] = f"R$ {totalFormatado}"
 
     def atualizaLinha(self, produto, indice, quantidade):
+        
         codigo = produto[0]
         descricao = produto[1]
         quantidadeAtual = int(produto[2])
-        preco = produto[3]
+        precoUni = float(produto[3].replace(",", "."))
         novaQuantidade = quantidadeAtual + quantidade
         self.conteudoTabela.item(
             indice,
@@ -396,9 +393,11 @@ class TelaDeVendas(tk.Toplevel):
                 codigo,
                 descricao,
                 novaQuantidade,
-                preco
+                precoUni,
+                precoUni * novaQuantidade
             )
         )
+        
 
     def finalizaCompra(self):
         itensDaLista = self.conteudoTabela.get_children()
@@ -419,11 +418,3 @@ class TelaDeVendas(tk.Toplevel):
         itensDaTabela = self.conteudoTabela.get_children()
         for i in itensDaTabela:
             self.conteudoTabela.delete(i)
-
-# root = tk.Tk()
-# # root.geometry("800x600")
-# root.attributes('-fullscreen', True)
-# root.title(f'Vendas - {ESTABELECIMENTO}')
-# root.configure(bg=COR_SECUNDARIA)
-# app = TelaDeVendas(master=root)
-# app.mainloop()

@@ -2,16 +2,22 @@ import tkinter as tk
 from constantes import *
 
 
-class ProdutoNaoEncontrado(tk.Toplevel):
-    def __init__(self, master=None):
+class Mensagem(tk.Toplevel):
+    def __init__(self, master, mensagem):
         tk.Toplevel.__init__(self, master)
-        self.main_frame = tk.Frame(self, bg=COR_FUNDO_SECUNDARIA, highlightthickness=2)
+        self.main_frame = tk.Frame(
+            self,
+            bg=COR_FUNDO_SECUNDARIA,
+            highlightthickness=2,
+            highlightcolor=CINZA_CHUMBO
+        )
         espacamentoSuperior = int(self.winfo_screenheight() * .4)
-        espacamentoLadoEsquerdo = int(self.winfo_screenwidth() *.4)
-        self.geometry(f"320x240+{espacamentoLadoEsquerdo}+{espacamentoSuperior}")
+        espacamentoLadoEsquerdo = int(self.winfo_screenwidth() * .4)
+        self.geometry(
+            f"320x240+{espacamentoLadoEsquerdo}+{espacamentoSuperior}")
         self.title("")
+        self.resizable(False, False)
         self.overrideredirect(1)
-        # self.title(f"Alerta - {ESTABELECIMENTO}")
         self.bind('<Return>', lambda a: self.destroy())
         self.bind('<Escape>', lambda a: self.destroy())
         self.focus_force()
@@ -19,7 +25,7 @@ class ProdutoNaoEncontrado(tk.Toplevel):
 
         self.mensagem = tk.Label(
             self.main_frame,
-            text="Produto não encontrado",
+            text=mensagem,
             font=ESTILO_FONT_MEDIA,
             fg=COR_TEXTO_PRIMARIA,
             bg=COR_FUNDO_SECUNDARIA
@@ -34,6 +40,6 @@ class ProdutoNaoEncontrado(tk.Toplevel):
             font=ESTILO_FONT_MEDIA,
             command=self.destroy
         )
-        
+
         self.mensagem.pack(expand=1, fill='x')
         self.btnSair.pack(expand=1, fill='x', padx=40)

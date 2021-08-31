@@ -2,7 +2,7 @@ import tkinter as tk
 from PIL import ImageTk, Image
 from constantes import *
 from tkinter import ttk
-from Alerta import ProdutoNaoEncontrado
+from Alerta import Mensagem
 from Manipula_Excel import Excel
 
 
@@ -16,17 +16,34 @@ class TelaDeConsulta(tk.Toplevel):
         self.main_frame.pack(expand=1, fill='both')
 
     def criaElementos(self):
-        self.frameBarraDeTitulo = tk.Frame(self.main_frame, bg=COR_FUNDO_PRIMARIA)
-        self.framePrincipal = tk.Frame(self.main_frame, bg=COR_FUNDO_SECUNDARIA)
-        self.frameBuscaProduto = tk.Frame(self.main_frame, bg=COR_FUNDO_SECUNDARIA)
+        self.frameBarraDeTitulo = tk.Frame(
+            self.main_frame,
+            bg=COR_FUNDO_PRIMARIA
+        )
+        self.framePrincipal = tk.Frame(
+            self.main_frame,
+            bg=COR_FUNDO_SECUNDARIA
+        )
+        self.frameBuscaProduto = tk.Frame(
+            self.main_frame,
+            bg=COR_FUNDO_SECUNDARIA
+        )
         self.frameCodigo = tk.Frame(
-            self.framePrincipal, bg=COR_FUNDO_SECUNDARIA)
+            self.framePrincipal,
+            bg=COR_FUNDO_SECUNDARIA
+        )
         self.frameDescricao = tk.Frame(
-            self.framePrincipal, bg=COR_FUNDO_SECUNDARIA)
+            self.framePrincipal,
+            bg=COR_FUNDO_SECUNDARIA
+        )
         self.frameQuantidade = tk.Frame(
-            self.framePrincipal, bg=COR_FUNDO_SECUNDARIA)
+            self.framePrincipal,
+            bg=COR_FUNDO_SECUNDARIA
+        )
         self.framePreco = tk.Frame(
-            self.framePrincipal, bg=COR_FUNDO_SECUNDARIA)
+            self.framePrincipal,
+            bg=COR_FUNDO_SECUNDARIA
+        )
 
         self.titulo = tk.Label(
             self.frameBarraDeTitulo,
@@ -58,6 +75,8 @@ class TelaDeConsulta(tk.Toplevel):
             self.frameBuscaProduto,
             font=ESTILO_FONT_MEDIA
         )
+
+        self.campoBuscaProduto.focus()
 
         self.labelCodigo = tk.Label(
             self.frameCodigo,
@@ -120,7 +139,7 @@ class TelaDeConsulta(tk.Toplevel):
             font=ESTILO_FONT_MEDIA,
             bg=COR_FUNDO_PRIMARIA,
             fg=COR_TEXTO_PRIMARIA,
-            text='Preço'
+            text='Preço / Preço Kg'
         )
 
         self.campoBuscaProduto.bind(
@@ -139,9 +158,9 @@ class TelaDeConsulta(tk.Toplevel):
             self.descricao['text'] = produto.descricao
             self.quantidade['text'] = produto.quantidade
             self.preco['text'] = f'R$ {produto.precoVenda}'
-            self.campoBuscaProduto.delete(0,'end')
+            self.campoBuscaProduto.delete(0, 'end')
         else:
-            ProdutoNaoEncontrado(self)
+            Mensagem(self, "Produto não encontrado")
 
     def renderizaElementos(self):
         self.frameBarraDeTitulo.pack(fill='x')
