@@ -342,6 +342,7 @@ class TelaDeVendas(tk.Toplevel):
             self.campoQuantidade.insert(0, "1")
 
         else:
+            self.campoCodigoProduto.delete(0, 'end')
             Mensagem(self, "Produto não encontrado")
 
     def atualizaTotal(self):

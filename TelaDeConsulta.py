@@ -160,6 +160,7 @@ class TelaDeConsulta(tk.Toplevel):
             self.preco['text'] = f'R$ {produto.precoVenda}'
             self.campoBuscaProduto.delete(0, 'end')
         else:
+            self.campoBuscaProduto.delete(0, 'end')
             Mensagem(self, "Produto não encontrado")
 
     def renderizaElementos(self):

@@ -49,7 +49,7 @@ class Application(tk.Frame):
 
         self.btnFecharAplicacao = tk.Button(
             self.frameBotoes,
-            text="Fechar aplicação",
+            text="Fechar aplicacao",
             font=ESTILO_FONT_GRANDE,
             bg=COR_FUNDO_PRIMARIA,
             fg=COR_TEXTO_PRIMARIA,
