@@ -16,7 +16,7 @@ class TelaProdutoPesavel(tk.Toplevel):
         self.resizable(False, False)
         self.criaElementos()
         espacamentoSuperior = int(self.winfo_screenheight() * .25)
-        espacamentoLadoEsquerdo = int(self.winfo_screenwidth() * .35)
+        espacamentoLadoEsquerdo = int(self.winfo_screenwidth() * .15)
         self.geometry(
             f"400x480+{espacamentoLadoEsquerdo}+{espacamentoSuperior}")
         self.overrideredirect(1)

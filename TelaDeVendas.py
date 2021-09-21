@@ -20,14 +20,17 @@ class TelaDeVendas(tk.Toplevel):
         self.main_frame.pack(expand=1, fill='both')
 
     def criaElementos(self):
+
         self.frameCampos = tk.Frame(
             self.main_frame,
             bg=COR_FUNDO_SECUNDARIA
         )
+
         self.frameProdutos = tk.Frame(
             self.main_frame,
             bg=COR_FUNDO_SECUNDARIA
         )
+
         self.frameValorTotal = tk.Frame(self.frameProdutos)
         self.frameQuantidade = tk.Frame(self.frameCampos)
         self.frameBotoes = tk.Frame(
@@ -177,7 +180,7 @@ class TelaDeVendas(tk.Toplevel):
             'Código',
             'Descricao',
             'Qtd',
-            'Preço Uni',
+            'R$ Uni',
             'Preço'
         )
 
@@ -188,33 +191,33 @@ class TelaDeVendas(tk.Toplevel):
         self.conteudoTabela.column(
             'Código',
             anchor='center',
-            minwidth=100,
-            width=100
+            minwidth=85,
+            width=85
         )
         self.conteudoTabela.column(
             'Descricao',
             anchor='center',
-            minwidth=120,
-            width=120
+            minwidth=150,
+            width=150
         )
         self.conteudoTabela.column(
             'Qtd',
             anchor='center',
-            minwidth=80,
-            width=80
+            minwidth=50,
+            width=50
         )
         self.conteudoTabela.column(
-            'Preço Uni',
+            'R$ Uni',
             anchor='center',
-            minwidth=80,
-            width=80
+            minwidth=50,
+            width=50
         )
 
         self.conteudoTabela.column(
             'Preço',
             anchor='center',
-            minwidth=80,
-            width=80
+            minwidth=50,
+            width=50
         )
 
         self.conteudoTabela.heading(
@@ -234,18 +237,18 @@ class TelaDeVendas(tk.Toplevel):
         )
         self.conteudoTabela.heading(
             'Qtd',
-            text='Qtd / Peso',
+            text='Qtd/Pes',
             anchor='center'
         )
         self.conteudoTabela.heading(
-            'Preço Uni',
-            text='Preço Uni',
+            'R$ Uni',
+            text='R$ Uni',
             anchor='center'
         )
 
         self.conteudoTabela.heading(
             'Preço',
-            text='Preço',
+            text='R$',
             anchor='center'
         )
 
@@ -258,7 +261,7 @@ class TelaDeVendas(tk.Toplevel):
             side='right',
             expand=1,
             fill='both',
-            padx=40,
+            padx=(20,10),
             pady=40
         )
 
@@ -266,7 +269,7 @@ class TelaDeVendas(tk.Toplevel):
             side='left',
             expand=1,
             fill='both',
-            padx=40,
+            padx=(20,10),
             pady=40
         )
 
@@ -296,7 +299,7 @@ class TelaDeVendas(tk.Toplevel):
             expand=1, fill='x', side='left', padx=(0, 20))
 
         self.logo.pack(expand=1, fill='both')
-        imagemCarrinho = Image.open("grocery-cart.png")
+        imagemCarrinho = Image.open("grocery-cart -light.png") #grocery-cart.png
 
         imagemCarrinho = imagemCarrinho.resize(
             self.TAMANHO_DA_IMAGEM,

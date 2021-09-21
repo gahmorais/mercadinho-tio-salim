@@ -114,7 +114,7 @@ class Application(tk.Frame):
         self.tituloLinhaUm.pack(fill='x')
         self.tituloLinhaDois.pack(fill='x')
         self.logo.pack(expand=1, fill='both')
-        imagemCarrinho = Image.open("grocery-cart.png")
+        imagemCarrinho = Image.open("grocery-cart -light.png")
         imagemCarrinho = imagemCarrinho.resize(
             self.TAMANHO_DA_IMAGEM,
             Image.ANTIALIAS
