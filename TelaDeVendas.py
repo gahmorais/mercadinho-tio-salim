@@ -299,7 +299,7 @@ class TelaDeVendas(tk.Toplevel):
             expand=1, fill='x', side='left', padx=(0, 20))
 
         self.logo.pack(expand=1, fill='both')
-        imagemCarrinho = Image.open("grocery-cart -light.png") #grocery-cart.png
+        imagemCarrinho = Image.open("salim-logo.png") #grocery-cart.png
 
         imagemCarrinho = imagemCarrinho.resize(
             self.TAMANHO_DA_IMAGEM,
