@@ -1,1 +1,1 @@
-pyinstaller TelaPrincipal.py -F -w
+ pyinstaller --clean --onefile --windowed --icon ".\images\salim-big.ico" .\TelaPrincipal.py
