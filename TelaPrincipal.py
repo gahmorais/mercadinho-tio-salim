@@ -3,7 +3,6 @@ from PIL import ImageTk, Image
 from Manipula_Excel import Excel
 from TelaDeVendas import TelaDeVendas
 from TelaDeConsulta import TelaDeConsulta
-from openpyxl import load_workbook
 from constantes import *
 
 
@@ -35,7 +34,7 @@ class Application(tk.Frame):
 
         self.tituloLinhaDois = tk.Label(
             self.frameTitulo,
-            text='Tio Salim',
+            text='do bairro',
             font=ESTILO_FONT_TELA_PRINCIPAL_MUITO_GRANDE,
             bg=COR_FUNDO_SECUNDARIA,
             fg=COR_TEXTO_PRIMARIA
@@ -114,7 +113,7 @@ class Application(tk.Frame):
         self.tituloLinhaUm.pack(fill='x')
         self.tituloLinhaDois.pack(fill='x')
         self.logo.pack(expand=1, fill='both')
-        imagemCarrinho = Image.open("salim-logo.png")
+        imagemCarrinho = Image.open(LOGO_MERCADO)
         imagemCarrinho = imagemCarrinho.resize(
             self.TAMANHO_DA_IMAGEM,
             Image.ANTIALIAS

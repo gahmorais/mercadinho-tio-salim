@@ -13,7 +13,7 @@ class TelaDeVendas(tk.Toplevel):
         self.main_frame = tk.Frame(self, bg=COR_FUNDO_SECUNDARIA)
         self.attributes('-fullscreen', True)
         self.criaElementos()
-        self.planilha = Excel('inventario-loja.xlsx')
+        self.planilha = Excel(TABELA_PRODUTOS)
 
         self.count = 1
         self.total = 0
@@ -43,7 +43,7 @@ class TelaDeVendas(tk.Toplevel):
         )
 
         self._tamanhoDaTela = self.winfo_screenheight()
-        if(self._tamanhoDaTela < 900):
+        if (self._tamanhoDaTela < 900):
             self.TAMANHO_DA_IMAGEM = IMAGEM_PEQUENA
         else:
             self.TAMANHO_DA_IMAGEM = IMAGEM_GRANDE
@@ -261,7 +261,7 @@ class TelaDeVendas(tk.Toplevel):
             side='right',
             expand=1,
             fill='both',
-            padx=(20,10),
+            padx=(20, 10),
             pady=40
         )
 
@@ -269,7 +269,7 @@ class TelaDeVendas(tk.Toplevel):
             side='left',
             expand=1,
             fill='both',
-            padx=(20,10),
+            padx=(20, 10),
             pady=40
         )
 
@@ -299,7 +299,7 @@ class TelaDeVendas(tk.Toplevel):
             expand=1, fill='x', side='left', padx=(0, 20))
 
         self.logo.pack(expand=1, fill='both')
-        imagemCarrinho = Image.open("salim-logo.png") #grocery-cart.png
+        imagemCarrinho = Image.open(LOGO_MERCADO)  # grocery-cart.png
 
         imagemCarrinho = imagemCarrinho.resize(
             self.TAMANHO_DA_IMAGEM,
@@ -310,7 +310,7 @@ class TelaDeVendas(tk.Toplevel):
 
     def adicionaLinha(self, codigoProduto, quantidade=1):
         produto = self.planilha.buscaProduto(codigoProduto)
-        if(produto != ""):
+        if (produto != ""):
             itensDaLista = self.conteudoTabela.get_children()
             produtoAtualizado = False
             for item in itensDaLista:
@@ -326,9 +326,10 @@ class TelaDeVendas(tk.Toplevel):
                     )
                     produtoAtualizado = True
                     break
-            if(not produtoAtualizado):
+            if (not produtoAtualizado):
                 id = self.count
-                precoTotal = float(produto.precoVenda.replace(",", ".")) * int(quantidade)
+                precoTotal = float(produto.precoVenda.replace(
+                    ",", ".")) * int(quantidade)
                 self.conteudoTabela.insert(parent='', index=id, iid=id, text='', values=(
                     produto.codigo,
                     produto.descricao,
@@ -346,7 +347,7 @@ class TelaDeVendas(tk.Toplevel):
 
         else:
             self.campoCodigoProduto.delete(0, 'end')
-            Mensagem(self, "Produto não encontrado")
+            Mensagem(self, MESSAGE_PRODUCT_NOT_FOUNDED)
 
     def atualizaTotal(self):
         self.total = 0
@@ -358,7 +359,7 @@ class TelaDeVendas(tk.Toplevel):
             )
             self.total += valor
 
-        totalFormatado = self.formataValor(self.total) #"{:.2f}".format()
+        totalFormatado = self.formataValor(self.total)  # "{:.2f}".format()
         self.campoValorTotal['text'] = f"R$ {totalFormatado}"
 
     def abreTelaDePesagem(self):
@@ -366,7 +367,8 @@ class TelaDeVendas(tk.Toplevel):
 
     def adicionaLinhaProdutoPesavel(self, produtoPesavel):
         id = self.count
-        precoTotal = float(produtoPesavel.precoVenda.replace(",", ".")) * float(produtoPesavel.quantidade)
+        precoTotal = float(produtoPesavel.precoVenda.replace(
+            ",", ".")) * float(produtoPesavel.quantidade)
         self.conteudoTabela.insert(parent='', index=id, iid=id, text='', values=(
             produtoPesavel.codigo,
             produtoPesavel.descricao,
@@ -415,7 +417,7 @@ class TelaDeVendas(tk.Toplevel):
                 codigoProduto,
                 quantidade
             )
-            if(statusAtualizacao):
+            if (statusAtualizacao):
                 pass
             else:
                 print(f'Verifique o item: {codigoProduto}')
@@ -427,6 +429,6 @@ class TelaDeVendas(tk.Toplevel):
         itensDaTabela = self.conteudoTabela.get_children()
         for i in itensDaTabela:
             self.conteudoTabela.delete(i)
-    
+
     def formataValor(self, valor):
         return "{:.2f}".format(valor)

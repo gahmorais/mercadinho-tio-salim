@@ -1,10 +1,7 @@
 import tkinter as tk
-from PIL import ImageTk, Image
 from constantes import *
-from tkinter import ttk
 from Alerta import Mensagem
 from Manipula_Excel import Excel
-
 
 class TelaDeConsulta(tk.Toplevel):
     def __init__(self, master):
@@ -12,7 +9,7 @@ class TelaDeConsulta(tk.Toplevel):
         self.main_frame = tk.Frame(self, bg=COR_FUNDO_SECUNDARIA)
         self.attributes('-fullscreen', True)
         self.criaElementos()
-        self.planilha = Excel('inventario-loja.xlsx')
+        self.planilha = Excel(TABELA_PRODUTOS)
         self.main_frame.pack(expand=1, fill='both')
 
     def criaElementos(self):
@@ -71,6 +68,7 @@ class TelaDeConsulta(tk.Toplevel):
             text='Insira o código do produto',
             padx=10
         )
+        
         self.campoBuscaProduto = tk.Entry(
             self.frameBuscaProduto,
             font=ESTILO_FONT_MEDIA
@@ -161,7 +159,7 @@ class TelaDeConsulta(tk.Toplevel):
             self.campoBuscaProduto.delete(0, 'end')
         else:
             self.campoBuscaProduto.delete(0, 'end')
-            Mensagem(self, "Produto não encontrado")
+            Mensagem(self, MESSAGE_PRODUCT_NOT_FOUNDED)
 
     def renderizaElementos(self):
         self.frameBarraDeTitulo.pack(fill='x')
@@ -187,6 +185,3 @@ class TelaDeConsulta(tk.Toplevel):
 
         self.labelPreco.pack()
         self.preco.pack()
-
-    def mostraBind(self):
-        print('bind')

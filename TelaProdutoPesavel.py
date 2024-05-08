@@ -22,7 +22,7 @@ class TelaProdutoPesavel(tk.Toplevel):
         self.overrideredirect(1)
         self.pesarProduto = pesarProduto
         self._produto = None
-        self.bancoDeDados = Excel('inventario-loja.xlsx')
+        self.bancoDeDados = Excel(TABELA_PRODUTOS)
         self.bind('<Escape>', lambda e: self.destroy())
         self.main_frame.pack(expand=1, fill='both')
 
@@ -109,7 +109,7 @@ class TelaProdutoPesavel(tk.Toplevel):
             self.preco['text'] = f'{self._produto.precoVenda}/Kg'
             self.campoPeso.focus()
         else:
-            Mensagem(self, "Produto não encontrado")
+            Mensagem(self, MESSAGE_PRODUCT_NOT_FOUNDED)
 
     def enviaParaTelaDeVendas(self):
         peso = self.campoPeso.get()
@@ -119,7 +119,7 @@ class TelaProdutoPesavel(tk.Toplevel):
             self.limparCampos()
             self.destroy()
         else:
-            Mensagem(self, "Por favor digite o peso")
+            Mensagem(self, MESSAGE_WEIGHT_THE_PRODUCT)
 
     def limparCampos(self):
         self.campoCodigoProduto.delete(0, 'end')
