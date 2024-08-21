@@ -1,5 +1,5 @@
 # Sistema de Gestão de Vendas para Pequenos Negócios
----
+
 ### MERCADO.PY
 
 Transforme a gestão do seu negócio com o **Mercado.py**, um sistema completo e intuitivo para gerenciamento de vendas e controle de estoque. Ideal para pequenos comerciantes, ele oferece:
