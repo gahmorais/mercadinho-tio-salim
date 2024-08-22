@@ -1,6 +1,5 @@
 import tkinter as tk
 from PIL import ImageTk, Image
-from Manipula_Excel import Excel
 from TelaDeVendas import TelaDeVendas
 from TelaDeConsulta import TelaDeConsulta
 from constantes import *
@@ -26,7 +25,7 @@ class Application(tk.Frame):
 
         self.tituloLinhaUm = tk.Label(
             self.frameTitulo,
-            text='Mercado',
+            text='MERCADO.PY',
             font=ESTILO_FONT_TELA_PRINCIPAL_GRANDE,
             bg=COR_FUNDO_SECUNDARIA,
             fg=COR_TEXTO_PRIMARIA
@@ -34,7 +33,7 @@ class Application(tk.Frame):
 
         self.tituloLinhaDois = tk.Label(
             self.frameTitulo,
-            text='do bairro',
+            text='',
             font=ESTILO_FONT_TELA_PRINCIPAL_MUITO_GRANDE,
             bg=COR_FUNDO_SECUNDARIA,
             fg=COR_TEXTO_PRIMARIA
